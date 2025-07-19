@@ -8,8 +8,27 @@
 
 POST {{baseUrl}}/signin
 
+{
+  "email": "mateuscorreiaazevedo@gmail.com",
+  "password": "12345678" 
+}
+
 ###
 
 # SignUp
 
 POST {{baseUrl}}/signup
+
+{
+  "goal": "LOSE_WEIGHT",
+  "gender": "MALE",
+  "birthDate": "1999-05-20",
+  "height": 180,
+  "weight": 80,
+  "activityLevel": 5,
+  "account": {
+    "name": "Mateus",
+    "email": "mateuscorreiaazevedo@gmail.com",
+    "password": "12345678"
+  }
+}

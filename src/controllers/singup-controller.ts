@@ -1,12 +1,34 @@
+import z from "zod";
 import type { HttpRequest, HttpResponse } from "../types/http";
-import { HttpCreated } from "../utils/helpers/http-response-helper";
+import { HttpBadRequest, HttpCreated } from "../utils/helpers/http-response-helper";
+
+
+const schema = z.object({
+  goal: z.enum(['LOSE_WEIGHT', 'GAIN_MUSCLE', 'MAINTAIN_MUSCLE']),
+  gender: z.enum(['MALE', 'FEMALE']),
+  birthDate: z.iso.date(),
+  height: z.number(),
+  weight: z.number(),
+  activityLevel: z.number().min(1).max(5),
+  account: z.object({
+    name: z.string().min(3),
+    email: z.email(),
+    password: z.string().min(8),
+  })
+})
 
 export class SignUpController {
-  static async handle(req: HttpRequest): Promise<HttpResponse> {
-    await Promise.resolve()
+  static async handle({body}: HttpRequest): Promise<HttpResponse> {
+    const {success, data, error} = schema.safeParse(body)
     
+    if (!success) {
+      return HttpBadRequest({
+        errors: error.issues
+      })
+    }
+
     return HttpCreated({
-      accessToken: 'SignUp: token'
+      data
     })
   }
 }
