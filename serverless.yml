@@ -95,3 +95,15 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: foodiary-bucket-app
+    MealsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: foodiary-meals-queue
+        VisibilityTimeout: 60
+        RedrivePolicy:
+          maxReceiveCount: 1
+          deadLetterTargetArn: !GetAtt MealsDLQ.Arn
+    MealsDLQ:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: foodiary-meals-dlq
