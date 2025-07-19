@@ -6,6 +6,8 @@ import { schemas } from "../db/schemas";
 import { eq } from "drizzle-orm";
 import bcrypt from 'bcryptjs'
 
+import { signAccessTokenFor } from "../lib/jwt";
+
 const schema = z.object({
   email: z.email(),
   password: z.string().min(8),
@@ -23,7 +25,6 @@ export class SignInController {
     
     const [user] = await db.select({
           id: schemas.accounts.id,
-          email: schemas.accounts.email,
           hashedPassword: schemas.accounts.password 
         }).from(schemas.accounts).where(eq(schemas.accounts.email, data.email))
     
@@ -33,11 +34,10 @@ export class SignInController {
     })
   }
     
+  const accessToken = signAccessTokenFor(user.id)
+  
     return HttpOk({
-      data: {
-        userId: user.id,
-        email: user.email,
-      }
+      accessToken
     })
   }
 }
