@@ -1,5 +1,5 @@
-import { accountsTable as accounts } from "./accounts";
+import { accountsTable } from "./accounts";
 
-export {
-  accounts
+export const schemas = {
+  accounts: accountsTable
 }

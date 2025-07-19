@@ -20,7 +20,7 @@ POST {{baseUrl}}/signin
 POST {{baseUrl}}/signup
 
 {
-  "goal": "LOSE_WEIGHT",
+  "goal": "LOSE",
   "gender": "MALE",
   "birthDate": "1999-05-20",
   "height": 180,

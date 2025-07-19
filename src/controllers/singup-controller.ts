@@ -1,6 +1,9 @@
 import z from "zod";
 import type { HttpRequest, HttpResponse } from "../types/http";
-import { HttpBadRequest, HttpCreated } from "../utils/helpers/http-response-helper";
+import { HttpBadRequest, HttpConflict, HttpCreated } from "../utils/helpers/http-response-helper";
+import { db } from "../db";
+import { schemas } from "../db/schemas";
+import { eq } from "drizzle-orm";
 
 
 const schema = z.object({
@@ -27,8 +30,31 @@ export class SignUpController {
       })
     }
 
+    const userAlreadyExists = await db.select({
+      email: schemas.accounts.email
+    }).from(schemas.accounts).where(eq(schemas.accounts.email, data.account.email))
+
+    if (userAlreadyExists[0]) {
+      return HttpConflict({
+        errors: ['User already exists']
+      })
+    }
+
+    const {account, ...restData} = data
+    
+    const [user] = await db.insert(schemas.accounts).values({
+      ...restData,
+      ...account,
+      calories: 0,
+      carbs: 0,
+      fats: 0,
+      proteins: 0
+    }).returning({
+      userId: schemas.accounts.id,
+    })
+
     return HttpCreated({
-      data
+      ...user
     })
   }
 }
