@@ -63,3 +63,12 @@ functions:
       - httpApi:
           path: /me
           method: GET
+
+
+
+resources:
+  Resources:
+    UploadsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: foodiary-bucket-app
