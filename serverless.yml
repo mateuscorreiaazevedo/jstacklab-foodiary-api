@@ -43,6 +43,13 @@ functions:
           path: /meals
           method: POST
 
+  listMeals:
+    handler: src/functions/list-meals.handler
+    events:
+      - httpApi:
+          path: /meals
+          method: GET
+
   me:
     handler: src/functions/me.handler
     events:

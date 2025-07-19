@@ -52,3 +52,11 @@ Authorization: Bearer {{token}}
 {
   "fileType": "audio/m4a"
 }
+
+### List Meals
+
+@queryParams = ?date=2025-07-19
+
+# @name ListMeals
+GET {{baseUrl}}/meals{{queryParams}}
+Authorization: Bearer {{token}}
