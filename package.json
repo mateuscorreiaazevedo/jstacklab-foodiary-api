@@ -5,9 +5,14 @@
   "repository": "git@github.com:mateuscorreiaazevedo/jstacklab-foodiary-api.git",
   "author": "Mateus Azevedo <mateuscorreiaazevedo@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "sls offline start --reloadHandler",
+    "deploy": "sls deploy"
+  },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.152",
     "@types/node": "^24.0.15",
+    "serverless-offline": "^14.4.0",
     "typescript": "^5.8.3"
   }
 }

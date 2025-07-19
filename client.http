@@ -1,0 +1,15 @@
+### Variables
+@baseUrl = http://localhost:3000
+
+
+###
+
+# SignIn
+
+POST {{baseUrl}}/signin
+
+###
+
+# SignUp
+
+POST {{baseUrl}}/signup
