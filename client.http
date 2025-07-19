@@ -60,3 +60,10 @@ Authorization: Bearer {{token}}
 # @name ListMeals
 GET {{baseUrl}}/meals{{queryParams}}
 Authorization: Bearer {{token}}
+
+### Get Meal By Id
+
+@mealId = f022bd3f-fedc-49fd-88c5-92a1d9fb66a3
+
+GET {{baseUrl}}/meals/{{mealId}}
+Authorization: Bearer {{token}}
