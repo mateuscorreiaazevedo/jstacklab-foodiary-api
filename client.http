@@ -43,3 +43,12 @@ POST {{baseUrl}}/signup
 GET {{baseUrl}}/me
 Authorization: Bearer {{token}}
 
+
+### Create Meal
+# @name CreateMeal
+POST {{baseUrl}}/meals
+Authorization: Bearer {{token}}
+
+{
+  "fileType": "audio/m4a"
+}
