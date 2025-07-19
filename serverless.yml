@@ -79,7 +79,14 @@ functions:
       - httpApi:
           path: /me
           method: GET
-
+  fileUploadedEvent:
+    handler: src/functions/file-uploaded-event.handler
+    events:
+      - s3:
+          bucket: !Ref UploadsBucket
+          event: s3:ObjectCreated:*
+          existing: true
+          forceDeploy: true
 
 
 resources:
