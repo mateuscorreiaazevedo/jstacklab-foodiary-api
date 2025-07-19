@@ -5,30 +5,41 @@
 ###
 
 # SignIn
-
+# @name SignIn
 POST {{baseUrl}}/signin
 
 {
-  "email": "mateuscorreiaazevedo@gmail.com",
+  "email": "mateusazevedo@gmail.com",
   "password": "12345678" 
 }
 
 ###
 
 # SignUp
-
+# @name SignUp
 POST {{baseUrl}}/signup
 
 {
   "goal": "LOSE",
   "gender": "MALE",
   "birthDate": "1999-05-20",
-  "height": 180,
-  "weight": 80,
+  "height": 178,
+  "weight": 94,
   "activityLevel": 5,
   "account": {
     "name": "Mateus",
-    "email": "mateus@gmail.com",
+    "email": "mateusazevedo@gmail.com",
     "password": "12345678"
   }
 }
+
+###
+
+# Me
+# @name GetMe
+
+@token = {{SignIn.response.body.accessToken}}
+
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+

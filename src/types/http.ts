@@ -10,3 +10,6 @@ export type HttpResponse = {
 };
 
 
+export type ProtectedHttpRequest = HttpRequest & {
+  userId: string;
+}
