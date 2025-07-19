@@ -4,7 +4,7 @@ import { HttpBadRequest, HttpCreated } from "../utils/helpers/http-response-help
 
 
 const schema = z.object({
-  goal: z.enum(['LOSE_WEIGHT', 'GAIN_MUSCLE', 'MAINTAIN_MUSCLE']),
+  goal: z.enum(['LOSE', 'GAIN', 'MAINTAIN']),
   gender: z.enum(['MALE', 'FEMALE']),
   birthDate: z.iso.date(),
   height: z.number(),
