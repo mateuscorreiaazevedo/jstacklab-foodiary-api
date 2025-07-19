@@ -9,7 +9,7 @@
 POST {{baseUrl}}/signin
 
 {
-  "email": "mateuscorreiaazevedo@gmail.com",
+  "email": "joao@gmail.com",
   "password": "12345678" 
 }
 

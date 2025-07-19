@@ -13,20 +13,21 @@ export function HttpCreated(body?: Record<string, any>): HttpResponse {
     body,
   }
 }
-  
-export function HttpUnauthorized(body?: Record<string, any>): HttpResponse {
-  return {
-    statusCode: 401,
-    body,
-  }
-}
-  
+
 export function HttpBadRequest(body?: Record<string, any>): HttpResponse {
   return {
     statusCode: 400,
     body,
   }
 }
+
+export function HttpUnauthorized(body?: Record<string, any>): HttpResponse {
+  return {
+    statusCode: 401,
+    body,
+  }
+}
+
 export function HttpConflict(body?: Record<string, any>): HttpResponse {
   return {
     statusCode: 409,

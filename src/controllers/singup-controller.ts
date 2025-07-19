@@ -41,8 +41,10 @@ export class SignUpController {
     }
 
     const {account, ...restData} = data
+
+    const SALT_ROUNDS = 10
     
-    const hashedPassword = await bcrypt.hash(account.password, 10)
+    const hashedPassword = await bcrypt.hash(account.password, SALT_ROUNDS)
     
     const [user] = await db.insert(schemas.accounts).values({
       ...restData,
