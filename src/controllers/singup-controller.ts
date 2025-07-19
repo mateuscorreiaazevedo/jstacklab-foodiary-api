@@ -5,6 +5,7 @@ import { db } from "../db";
 import { schemas } from "../db/schemas";
 import { eq } from "drizzle-orm";
 import bcrypt from 'bcryptjs'
+import { calculateGoals } from "../utils/helpers/goal-calculator-helper";
 
 const schema = z.object({
   goal: z.enum(['LOSE', 'GAIN', 'MAINTAIN']),
@@ -42,18 +43,22 @@ export class SignUpController {
 
     const {account, ...restData} = data
 
+    
+
     const SALT_ROUNDS = 10
     
     const hashedPassword = await bcrypt.hash(account.password, SALT_ROUNDS)
     
+    const goals = calculateGoals({
+      ...restData,
+      birthDate: new Date(restData.birthDate)
+    })
+    
     const [user] = await db.insert(schemas.accounts).values({
       ...restData,
       ...account,
+      ...goals,
       password: hashedPassword,
-      calories: 0,
-      carbs: 0,
-      fats: 0,
-      proteins: 0
     }).returning({
       userId: schemas.accounts.id,
     })
