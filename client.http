@@ -6,7 +6,7 @@
 
 # SignIn
 # @name SignIn
-POST https://7gx3j49sx2.execute-api.us-east-1.amazonaws.com/signin
+POST {{baseUrl}}/signin
 
 {
   "email": "mateusazevedo@gmail.com",
@@ -38,7 +38,7 @@ POST {{baseUrl}}/signup
 # Me
 # @name GetMe
 
-@token = {{SignIn.response.body.accessToken}}
+@token = 
 
 GET {{baseUrl}}/me
 Authorization: Bearer {{token}}
@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 
 ### Create Meal
 # @name CreateMeal
-POST https://7gx3j49sx2.execute-api.us-east-1.amazonaws.com/meals
+POST {{baseUrl}}/meals
 Authorization: Bearer {{token}}
 
 {
