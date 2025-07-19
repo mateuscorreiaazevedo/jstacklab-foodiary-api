@@ -39,7 +39,7 @@ export class CreateMealController {
     const [meal] = await db.insert(schemas.meals).values({
       userId,
       icon: '',
-      inputFileKey: 'input_file_key',
+      inputFileKey: fileKey,
       inputType: data.fileType === 'audio/m4a' ? 'AUDIO' : 'IMAGE',
       status: 'UPLOADING',
       name: '',
