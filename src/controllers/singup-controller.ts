@@ -4,7 +4,7 @@ import { HttpBadRequest, HttpConflict, HttpCreated } from "../utils/helpers/http
 import { db } from "../db";
 import { schemas } from "../db/schemas";
 import { eq } from "drizzle-orm";
-
+import bcrypt from 'bcryptjs'
 
 const schema = z.object({
   goal: z.enum(['LOSE', 'GAIN', 'MAINTAIN']),
@@ -42,9 +42,12 @@ export class SignUpController {
 
     const {account, ...restData} = data
     
+    const hashedPassword = await bcrypt.hash(account.password, 10)
+    
     const [user] = await db.insert(schemas.accounts).values({
       ...restData,
       ...account,
+      password: hashedPassword,
       calories: 0,
       carbs: 0,
       fats: 0,

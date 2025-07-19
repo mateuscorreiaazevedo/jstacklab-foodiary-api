@@ -28,7 +28,7 @@ POST {{baseUrl}}/signup
   "activityLevel": 5,
   "account": {
     "name": "Mateus",
-    "email": "mateuscorreiaazevedo@gmail.com",
+    "email": "mateus@gmail.com",
     "password": "12345678"
   }
 }
