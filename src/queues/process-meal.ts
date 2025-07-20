@@ -1,6 +1,11 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { schemas } from "../db/schemas";
+import { transcribeAudio } from "../services/ai";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "../client/s3-client";
+import { HttpBadRequest } from "../utils/helpers/http-response-helper";
+import { Readable } from "node:stream";
 
 export class ProcessMeal {
   static async process({fileKey}: {fileKey: string}) {
@@ -22,6 +27,31 @@ export class ProcessMeal {
 
     try {
       // TODO: Call IA
+
+      if (meal.inputType === 'AUDIO') {
+        const command = new GetObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: meal.inputFileKey,
+        })
+
+        const {Body} = await s3Client.send(command)
+
+        if (!Body || !(Body instanceof Readable)) {
+          return HttpBadRequest({
+            errors: ['File not found']
+          })
+        }
+
+        const chunks = []
+        for await (const chunk of Body) {
+          chunks.push(chunk)
+        }
+
+        const audioBuffer = Buffer.concat(chunks)
+        
+        const text = await transcribeAudio(audioBuffer)
+      }
+      
       await db.update(schemas.meals).set({
         status: 'SUCCESS',
         name: 'Cafézinho',
