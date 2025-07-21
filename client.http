@@ -6,7 +6,7 @@
 
 # SignIn
 # @name SignIn
-POST {{baseUrl}}/signin
+POST https://7gx3j49sx2.execute-api.us-east-1.amazonaws.com/signin
 
 {
   "email": "mateusazevedo@gmail.com",
@@ -17,7 +17,7 @@ POST {{baseUrl}}/signin
 
 # SignUp
 # @name SignUp
-POST {{baseUrl}}/signup
+POST https://7gx3j49sx2.execute-api.us-east-1.amazonaws.com/signup
 
 {
   "goal": "LOSE",
@@ -27,9 +27,9 @@ POST {{baseUrl}}/signup
   "weight": 94,
   "activityLevel": 5,
   "account": {
-    "name": "Mateus",
-    "email": "mateusazevedo@gmail.com",
-    "password": "12345678"
+    "name": "José",
+    "email": "ze@gmail.com",
+    "password": "123123123"
   }
 }
 

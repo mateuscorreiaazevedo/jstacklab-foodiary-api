@@ -6,6 +6,7 @@ import { schemas } from "../db/schemas";
 import { eq } from "drizzle-orm";
 import bcrypt from 'bcryptjs'
 import { calculateGoals } from "../utils/helpers/goal-calculator-helper";
+import { signAccessTokenFor } from "../lib/jwt";
 
 const schema = z.object({
   goal: z.enum(['LOSE', 'GAIN', 'MAINTAIN']),
@@ -31,11 +32,11 @@ export class SignUpController {
       })
     }
 
-    const userAlreadyExists = await db.select({
+    const [userAlreadyExists] = await db.select({
       email: schemas.accounts.email
     }).from(schemas.accounts).where(eq(schemas.accounts.email, data.account.email))
 
-    if (userAlreadyExists[0]) {
+    if (userAlreadyExists) {
       return HttpConflict({
         errors: ['User already exists']
       })
@@ -63,8 +64,10 @@ export class SignUpController {
       userId: schemas.accounts.id,
     })
 
+    const accessToken = signAccessTokenFor(user.userId)
+    
     return HttpCreated({
-      ...user
+      accessToken
     })
   }
 }
