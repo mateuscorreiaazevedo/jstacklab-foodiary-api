@@ -1,10 +1,11 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { schemas } from "../db/schemas";
-import { getMealDetailsFromText, transcribeAudio } from "../services/ai";
+import { getMealDetailsFromImage, getMealDetailsFromText, transcribeAudio } from "../services/ai";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "../client/s3-client";
 import { Readable } from "node:stream";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export class ProcessMeal {
   static async process({ fileKey }: { fileKey: string }) {
@@ -34,37 +35,28 @@ export class ProcessMeal {
         const audioFileBuffer = await this.downloadAudioFile(meal.inputFileKey);
         const transcription = await transcribeAudio(audioFileBuffer);
 
-        console.log('funcionou depois da descrição do áudio')
-        
         const mealDetails = await getMealDetailsFromText({
           createdAt: new Date(),
           text: transcription,
         });
-
-        console.log('funcionou depois do getMealDetailsFromText')
 
         icon = mealDetails.icon;
         name = mealDetails.name;
         foods = mealDetails.foods;
       }
 
-      console.log(JSON.stringify({
-        icon,
-        name,
-        foods,
-      }, null, 2))
-      // if (meal.inputType === 'picture') {
-      //   const imageURL = await this.getImageURL(meal.inputFileKey);
+      if (meal.inputType === 'IMAGE') {
+        const imageURL = await this.getImageURL(meal.inputFileKey);
 
-      //   const mealDetails = await getMealDetailsFromImage({
-      //     createdAt: meal.createdAt,
-      //     imageURL,
-      //   });
+        const mealDetails = await getMealDetailsFromImage({
+          createdAt: meal.createdAt,
+          imageURL,
+        });
 
-      //   icon = mealDetails.icon;
-      //   name = mealDetails.name;
-      //   foods = mealDetails.foods;
-      // }
+        icon = mealDetails.icon;
+        name = mealDetails.name;
+        foods = mealDetails.foods;
+      }
 
       await db
         .update(schemas.meals)
@@ -76,7 +68,6 @@ export class ProcessMeal {
         })
         .where(eq(schemas.meals.id, meal.id));
 
-        console.log('funcionou depois do update')
     } catch (error) {
       console.log(error);
 
@@ -105,5 +96,14 @@ export class ProcessMeal {
     }
 
     return Buffer.concat(chunks);
+  }
+
+  private static async getImageURL(fileKey: string) {
+    const command = new GetObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: fileKey,
+    });
+
+    return getSignedUrl(s3Client, command, { expiresIn: 600 });
   }
 }
