@@ -25,7 +25,7 @@ export async function getMealDetailsFromText({
   text,
 }: GetMealDetailsFromTextParams) {
   const response = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'gpt-4.1-mini',
     messages: [
       {
         role: 'system',
@@ -33,7 +33,7 @@ export async function getMealDetailsFromText({
           Você é um nutricionista e está atendendo um de seus pacientes. Você deve responder para ele seguindo as instruções a baixo.
 
           Seu papel é:
-          1. Dar um nome e escolher um emoji (de uma refeição ou comida) para a refeição baseado no horário dela.
+          1. Dar um nome e escolher um emoji para a refeição baseado no horário dela.
           2. Identificar os alimentos presentes na imagem.
           3. Estimar, para cada alimento identificado:
             - Nome do alimento (em português)
@@ -53,7 +53,7 @@ export async function getMealDetailsFromText({
                 "name": "Arroz branco cozido",
                 "quantity": "150g",
                 "calories": 193,
-                "carbs": 42,
+                "carbohydrates": 42,
                 "proteins": 3.5,
                 "fats": 0.4
               },
@@ -61,7 +61,7 @@ export async function getMealDetailsFromText({
                 "name": "Peito de frango grelhado",
                 "quantity": "100g",
                 "calories": 165,
-                "carbs": 0,
+                "carbohydrates": 0,
                 "proteins": 31,
                 "fats": 3.6
               }
