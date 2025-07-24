@@ -16,7 +16,6 @@ const schema = z.object({
 export class CreateMealController {
   static async handle({userId, body}: ProtectedHttpRequest): Promise<HttpResponse> {
     const {success, data, error} = schema.safeParse(body)
-            
     if (!success) {
       return HttpBadRequest({
         errors: error.issues
